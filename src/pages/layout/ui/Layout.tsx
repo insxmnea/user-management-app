@@ -5,7 +5,7 @@ import { Sidebar } from "@widgets/sidebar";
 import { Outlet } from "react-router-dom";
 
 export const Layout = () => {
-  const [opened] = useDisclosure();
+  const [opened, { toggle }] = useDisclosure();
 
   return (
     <AppShell
@@ -18,7 +18,7 @@ export const Layout = () => {
       }}
     >
       <AppShell.Header>
-        <Header />
+        <Header opened={opened} toggle={toggle} />
       </AppShell.Header>
       <AppShell.Navbar>
         <Sidebar />

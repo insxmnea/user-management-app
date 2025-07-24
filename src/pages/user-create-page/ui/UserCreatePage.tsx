@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import styles from "./UserCreatePage.module.css";
 import { api } from "@shared/api";
 import { UserForm } from "@widgets/user-form";
 import type { UserFormValues } from "@entities/user";
+import { ROUTES } from "@app/router";
 
 export const UserCreatePage = () => {
   const navigate = useNavigate();
@@ -22,14 +22,14 @@ export const UserCreatePage = () => {
 
     try {
       await api.post("/v1/users", newUser);
-      navigate("/");
+      navigate(ROUTES.HOMEPAGE);
     } catch (error) {
       console.error("Ошибка создания пользователя:", error);
     }
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <h1>Создание пользователя</h1>
       <UserForm onSubmit={handleSubmit} />
     </div>

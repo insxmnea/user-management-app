@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import styles from "./UserEditPage.module.css";
 import { api } from "@shared/api";
 import { UserForm } from "@widgets/user-form";
 import type { UserFormValues } from "@entities/user";
@@ -30,7 +29,7 @@ export const UserEditPage = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <h1>Редактирование пользователя</h1>
       <UserForm onSubmit={handleSubmit} isEditMode />
     </div>

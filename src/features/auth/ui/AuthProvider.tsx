@@ -13,9 +13,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [checkAuth]);
 
   useEffect(() => {
-    if (!user && location.pathname !== "/login") {
+    if (!user && location.pathname !== ROUTES.LOGIN_PAGE) {
       navigate(ROUTES.LOGIN_PAGE);
-    } else if (user && location.pathname === "/login") {
+    } else if (user && location.pathname === ROUTES.LOGIN_PAGE) {
       navigate(ROUTES.HOMEPAGE);
     }
   }, [user, navigate, location]);

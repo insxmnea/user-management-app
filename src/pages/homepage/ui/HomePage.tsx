@@ -1,7 +1,6 @@
 import { Table, Button } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import styles from "./HomePage.module.css";
 import { useUserStore } from "@entities/user";
 
 export const HomePage = () => {
@@ -43,18 +42,16 @@ export const HomePage = () => {
   ));
 
   return (
-    <div className={styles.container}>
-      <Table striped highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>ID</Table.Th>
-            <Table.Th>Email</Table.Th>
-            <Table.Th>Полное имя</Table.Th>
-            <Table.Th colSpan={2}>Действия</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>{rows}</Table.Tbody>
-      </Table>
-    </div>
+    <Table striped highlightOnHover>
+      <Table.Thead>
+        <Table.Tr>
+          <Table.Th>ID</Table.Th>
+          <Table.Th>Email</Table.Th>
+          <Table.Th>Полное имя</Table.Th>
+          <Table.Th colSpan={2}>Действия</Table.Th>
+        </Table.Tr>
+      </Table.Thead>
+      <Table.Tbody>{rows}</Table.Tbody>
+    </Table>
   );
 };
