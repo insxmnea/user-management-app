@@ -14,9 +14,9 @@ export interface User {
 export interface UserFormValues {
   name: string;
   surName: string;
-  fullName: string;
-  password: string;
-  confirmPassword: string;
+  fullName?: string;
+  password?: string;
+  confirmPassword?: string;
   email: string;
   birthDate?: string;
   telephone?: string;
