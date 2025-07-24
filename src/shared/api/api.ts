@@ -24,5 +24,9 @@ async function fetchWrapper(endpoint: string, method: string, body?: object) {
     throw new Error(error.message || "Request failed");
   }
 
+  if (method === "DELETE" || method === "PATCH") {
+    return null;
+  }
+
   return response.json();
 }

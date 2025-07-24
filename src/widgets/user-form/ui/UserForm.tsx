@@ -11,6 +11,9 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useEffect } from "react";
+import type { User, UserFormValues } from "@entities/user";
+import { api } from "@shared/api";
+import { useParams } from "react-router-dom";
 
 const schema = yup.object().shape({
   name: yup
@@ -43,40 +46,54 @@ const schema = yup.object().shape({
   userAgreement: yup.boolean(),
 });
 
-const initialValues = {
+const initialValues: User = {
+  id: 0,
   name: "",
   surName: "",
-  password: "",
-  confirmPassword: "",
   fullName: "",
+  password: "",
   email: "",
+  birthDate: "",
+  telephone: "",
+  employment: "",
+  userAgreement: false,
 };
 
 interface Props {
-  onSubmit: (data: any) => void;
+  onSubmit: (data: UserFormValues) => void;
   isEditMode?: boolean;
-  defaultValues?: any;
 }
 
-export const UserForm = ({
-  onSubmit,
-  isEditMode = false,
-  defaultValues,
-}: Props) => {
+export const UserForm = ({ onSubmit, isEditMode = false }: Props) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
     watch,
     setValue,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       ...initialValues,
-      ...defaultValues,
     },
     context: { isEditMode },
   });
+
+  const { id } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await api.get(`/v1/users/${id}`);
+        reset(user);
+      } catch (error) {
+        console.error("Ошибка загрузки пользователя:", error);
+      }
+    };
+
+    if (id) fetchUser();
+  }, [id, reset]);
 
   const nameValue = watch("name");
   const surNameValue = watch("surName");
@@ -99,25 +116,19 @@ export const UserForm = ({
                 {...field}
                 label="Имя"
                 error={`${errors.name?.message || ""}`}
-                disabled={isEditMode}
               />
             )}
           />
           <Controller
             name="surName"
             control={control}
-            render={({ field }) => {
-              console.log(field);
-              return (
-                <TextInput
-                  {...field}
-                  value={field.value}
-                  label="Фамилия"
-                  error={`${errors.surName?.message || ""}`}
-                  disabled={isEditMode}
-                />
-              );
-            }}
+            render={({ field }) => (
+              <TextInput
+                {...field}
+                label="Фамилия"
+                error={`${errors.surName?.message || ""}`}
+              />
+            )}
           />
         </Group>
 
@@ -151,13 +162,15 @@ export const UserForm = ({
         <Controller
           name="fullName"
           control={control}
-          render={({ field }) => (
-            <TextInput
-              {...field}
-              label="Полное имя"
-              error={`${errors.fullName?.message || ""}`}
-            />
-          )}
+          render={({ field }) => {
+            return (
+              <TextInput
+                {...field}
+                label="Полное имя"
+                error={`${errors.fullName?.message || ""}`}
+              />
+            );
+          }}
         />
 
         <Controller
@@ -223,9 +236,9 @@ export const UserForm = ({
           control={control}
           render={({ field }) => (
             <Checkbox
-              {...field}
-              label="Принимаю условия пользовательского соглашения"
               checked={field.value}
+              onChange={(event) => field.onChange(event.target.checked)}
+              label="Принимаю условия пользовательского соглашения"
               error={`${errors.userAgreement?.message || ""}`}
             />
           )}

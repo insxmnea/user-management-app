@@ -1,32 +1,29 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useEffect } from "react";
 import styles from "./UserEditPage.module.css";
 import { api } from "@shared/api";
 import { UserForm } from "@widgets/user-form";
+import type { UserFormValues } from "@entities/user";
+import { ROUTES } from "@app/router";
 
 export const UserEditPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { reset } = useForm();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = await api.get(`/v1/users/${id}`);
-        reset(user);
-      } catch (error) {
-        console.error("Ошибка загрузки пользователя:", error);
-      }
+  const handleSubmit = async (values: UserFormValues) => {
+    const editedUser = {
+      name: values.name,
+      password: values.password,
+      fullName: values.fullName,
+      birthDate: values.birthDate,
+      telephone: values.telephone,
+      employment: values.employment,
+      surName: values.surName,
+      userAgreement: values.userAgreement,
     };
 
-    if (id) fetchUser();
-  }, [id, reset]);
-
-  const handleSubmit = async (values: any) => {
     try {
-      await api.patch(`/v1/users/${id}`, values);
-      navigate("/");
+      await api.patch(`/v1/users/${id}`, editedUser);
+      navigate(ROUTES.HOMEPAGE);
     } catch (error) {
       console.error("Ошибка обновления пользователя:", error);
     }

@@ -5,7 +5,7 @@ export interface User {
   password: string;
   fullName: string;
   email: string;
-  birthDate?: Date;
+  birthDate?: string;
   telephone?: string;
   employment?: string;
   userAgreement?: boolean;
@@ -14,8 +14,9 @@ export interface User {
 export interface UserFormValues {
   name: string;
   surName: string;
-  password?: string;
-  confirmPassword?: string;
+  fullName: string;
+  password: string;
+  confirmPassword: string;
   email: string;
   birthDate?: string;
   telephone?: string;

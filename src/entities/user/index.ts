@@ -1,2 +1,2 @@
 export { useUserStore } from "./model/user-store";
-export { type User } from "./types/models";
+export { type User, type UserFormValues } from "./types/models";
